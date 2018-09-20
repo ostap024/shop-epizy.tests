@@ -7,7 +7,7 @@ using OpenQA.Selenium.Chrome;
 namespace shop_epizy.tests
 {
     [TestFixture]
-    public class ChangePassword
+    public class TestChangePassword
     {
         private IWebDriver driver;
         [OneTimeSetUp]
