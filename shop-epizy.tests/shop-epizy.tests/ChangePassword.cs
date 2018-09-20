@@ -23,15 +23,12 @@ namespace shop_epizy.tests
         {
             //Arrange
             string email = "Ostap@gmail.com";
-            string oldPassword = "qwerty123";
+            string currPassword = "qwerty123";
             string newPassword = "q1w2e3r4t5y6";
 
             //Act
-            LogIn(email, oldPassword);
+            LogIn(email, currPassword);
             ChangePass(newPassword);
-            LogOut();
-            LogIn(email, newPassword);
-            ChangePass(oldPassword);
             LogOut();
         }
 
@@ -78,6 +75,13 @@ namespace shop_epizy.tests
         [OneTimeTearDown]
         public void AfterAllMethods()
         {
+            string email = "Ostap@gmail.com";
+            string currPassword = "qwerty123";
+            string newPassword = "q1w2e3r4t5y6";
+            LogOut();
+            LogIn(email, currPassword);
+            ChangePass(newPassword);
+            LogOut();
             driver.Quit();
         }
     }
