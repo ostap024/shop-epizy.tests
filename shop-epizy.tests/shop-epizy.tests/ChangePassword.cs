@@ -30,9 +30,7 @@ namespace shop_epizy.tests
             LogIn(email, oldPassword);
             ChangePass(newPassword);
             LogOut();
-            LogIn(email, newPassword);
-            ChangePass(oldPassword);
-            LogOut();
+
         }
 
         private void LogIn(string email, string password)
@@ -48,7 +46,7 @@ namespace shop_epizy.tests
             driver.FindElement(By.Id("input-password")).SendKeys(password);
 
             driver.FindElement(By.CssSelector("input.btn.btn-primary")).Click();
-            Thread.Sleep(2000);
+            //  Thread.Sleep(2000);
         }
 
         private void ChangePass(string newPassword)
@@ -64,20 +62,27 @@ namespace shop_epizy.tests
             driver.FindElement(By.Id("input-confirm")).SendKeys(newPassword);
 
             driver.FindElement(By.CssSelector("input.btn.btn-primary")).Click();
-            Thread.Sleep(2000);
+          //  Thread.Sleep(2000);
         }
 
         private void LogOut()
         {
             driver.Navigate().GoToUrl("http://atqc-shop.epizy.com/index.php?route=account/logout");
             driver.FindElement(By.CssSelector("a.btn.btn-primary")).Click();
-            Thread.Sleep(2000);
+           // Thread.Sleep(2000);
         }
 
 
         [OneTimeTearDown]
         public void AfterAllMethods()
         {
+            string email = "Ostap@gmail.com";
+            string oldPassword = "qwerty123";
+            string newPassword = "q1w2e3r4t5y6";
+            LogOut();
+            LogIn(email, newPassword);
+            ChangePass(oldPassword);
+            LogOut();
             driver.Quit();
         }
     }
