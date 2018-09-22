@@ -18,13 +18,21 @@ namespace shop_epizy.tests
         {
             driver = new ChromeDriver();
             driver.Manage().Timeouts().ImplicitWait = TimeSpan.FromSeconds(10);
-        }
-
-        [SetUp]
-        public void SetUp()
-        {
             driver.Navigate().GoToUrl("http://atqc-shop.epizy.com/");
         }
+        [OneTimeTearDown]
+        public void AfterAllMethods()
+        {
+            string email = "Ostap@gmail.com";
+            string currPassword = "q1w2e3r4t5y6";
+            string newPassword = "qwerty123";
+            LogOutURL();
+            LogIn(email, currPassword);
+            ChangePass(newPassword);
+            LogOut();
+            driver.Quit();
+        }
+
 
         [Test]
         public void Tets()
@@ -117,18 +125,7 @@ namespace shop_epizy.tests
             }
         }
 
-        [OneTimeTearDown]
-        public void AfterAllMethods()
-        {
-            string email = "Ostap@gmail.com";
-            string currPassword = "q1w2e3r4t5y6";
-            string newPassword = "qwerty123";
-            LogOutURL();
-            LogIn(email, currPassword);
-            ChangePass(newPassword);
-            LogOut();
-            driver.Quit();
-        }
+
         /*
          "#button-search + h2 + p"
     "//input[@id='button-search']/following-sibling::p"
