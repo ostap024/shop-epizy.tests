@@ -7,6 +7,7 @@ using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using LumenWorks.Framework.IO.Csv;
 using System.IO;
+using System.Collections;
 
 namespace shop_epizy.tests
 {
@@ -36,13 +37,15 @@ namespace shop_epizy.tests
         }
 
 
-        [Test, TestCaseSource("GetTestData")]
-        public void Tets(string email, string currPassword, string newPassword)
+        [Test, TestCaseSource(typeof(TestData), "GetTestData")]
+        public void Test(string email, string currPassword, string newPassword)
         {
             //Arrange
             string changePassExpected = "Success: Your password has been successfully updated.";
             string logInExpected = "Login success";
             //Act
+
+
             string logInActual = LogIn(email, currPassword);
             Assert.AreEqual(logInExpected, logInActual, logInActual);//робити в кінці чи після кожного виклику
 
@@ -112,18 +115,20 @@ namespace shop_epizy.tests
             driver.FindElement(By.CssSelector("a.btn.btn-primary")).Click();
             Thread.Sleep(2000);
         }
-
-        private static IEnumerable<string[]> GetTestData()
+        
+        public  static IEnumerable GetTestData
         {
-            using (CsvReader csv = new CsvReader(new StreamReader(TestContext.CurrentContext.TestDirectory+@"\test-data.csv"), true))
+            get
             {
-                while (csv.ReadNextRecord())
+                using (CsvReader csv = new CsvReader(new StreamReader(TestContext.CurrentContext.TestDirectory + @"\test-data.csv"), true))
                 {
-                    string email = csv[0];
-                    string currPassword = csv[1];
-                    string newPassword = csv[2];
-                    Console.WriteLine(email);
-                    yield return new[] { email, currPassword,newPassword};
+                    while (csv.ReadNextRecord())
+                    {
+                        string email = csv[0];
+                        string currPassword = csv[1];
+                        string newPassword = csv[2];
+                        yield return new TestCaseData(email, currPassword, newPassword);
+                    }
                 }
             }
         }
