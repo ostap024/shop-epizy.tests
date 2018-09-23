@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading;
 using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
-using OpenQA.Selenium.Support.UI;
+using LumenWorks.Framework.IO.Csv;
+using System.IO;
 
 namespace shop_epizy.tests
 {
@@ -34,13 +36,10 @@ namespace shop_epizy.tests
         }
 
 
-        [Test]
-        public void Tets()
+        [Test, TestCaseSource("GetTestData")]
+        public void Tets(string email, string currPassword, string newPassword)
         {
             //Arrange
-            string email = "Ostap@gmail.com";
-            string currPassword = "qwerty123";
-            string newPassword = "q1w2e3r4t5y6";
             string changePassExpected = "Success: Your password has been successfully updated.";
             string logInExpected = "Login success";
             //Act
@@ -106,12 +105,29 @@ namespace shop_epizy.tests
             driver.FindElement(By.CssSelector("a.btn.btn-primary")).Click();
             // Thread.Sleep(2000);
         }
+
         private void LogOutURL()
         {
             driver.Navigate().GoToUrl("http://atqc-shop.epizy.com/index.php?route=account/logout");
             driver.FindElement(By.CssSelector("a.btn.btn-primary")).Click();
             Thread.Sleep(2000);
         }
+
+        private static IEnumerable<string[]> GetTestData()
+        {
+            using (CsvReader csv = new CsvReader(new StreamReader(TestContext.CurrentContext.TestDirectory+@"\test-data.csv"), true))
+            {
+                while (csv.ReadNextRecord())
+                {
+                    string email = csv[0];
+                    string currPassword = csv[1];
+                    string newPassword = csv[2];
+                    Console.WriteLine(email);
+                    yield return new[] { email, currPassword,newPassword};
+                }
+            }
+        }
+
         private bool IsElementPresent(By by)
         {
             try
@@ -127,6 +143,7 @@ namespace shop_epizy.tests
 
 
         /*
+         * ///повідомлення про забагатовводів неправильних паролів
          "#button-search + h2 + p"
     "//input[@id='button-search']/following-sibling::p"
     "//input[@id='button-search']/following-sibling::p[contains(text(),'matches')]"
