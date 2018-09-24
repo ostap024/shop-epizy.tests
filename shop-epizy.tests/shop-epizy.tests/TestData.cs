@@ -1,10 +1,10 @@
-﻿using CsvHelper;
+
 using NUnit.Framework;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
+using CsvHelper;
 namespace shop_epizy.tests
 {
     public class TestData
@@ -14,7 +14,7 @@ namespace shop_epizy.tests
         {
             get
             {
-                using (CsvReader csv = new CsvReader(new StreamReader(@"C:\Users\ostap\source\repos\shop-epizy.tests\shop-epizy.tests\shop-epizy.tests\bin\Debug\test-data.csv"), true))
+                using (CsvReader csv = new CsvReader(new StreamReader(@"C:\Users\ovrontc\source\repos\shop-epizy.tests\shop-epizy.tests\shop-epizy.tests\test-data.csv"), true))
                 {
                     while (csv.Read())
                     {
